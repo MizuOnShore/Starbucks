@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Starbucks</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="sblogo.png">
+
+    <!-- Include your script.js file -->
+    <script src="script.js"></script>
+    <style>
+        /* Custom styles */
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2; /* Updated background color */
+            color: #333; /* Default text color */
+        }
+
+        .navbar {
+            background-color: #ffffff; /* Updated navbar background color */
+            border-bottom: 1px solid #e2e2e2; /* Added border bottom */
+        }
+
+        .navbar img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .navbar a {
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem; /* Updated font size */
+            margin-right: 1rem; /* Reduced margin */
+        }
+
+        .jumbotron {
+            background-image: url('coffee_image.jpg');
+            background-size: cover;
+            color: #ffffff;
+            text-align: center;
+            padding: 150px 20px;
+            margin-bottom: 0;
+            background-color: #f2f2f2;
+        }
+
+        .jumbotron h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem; /* Adjusted margin */
+        }
+
+        .jumbotron p {
+            font-size: 1.2rem; /* Updated font size */
+        }
+
+        .section {
+            padding: 6rem 0; /* Adjusted padding */
+        }
+
+        .image-container {
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-container .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .image-container h2, .image-container p {
+            margin: 0;
+            text-align: center;
+        }
+
+        .image-container a {
+            margin-top: 20px;
+            background-color: #006633;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .image-container a:hover {
+            background-color: #004d33;
+        }
+
+        .footer {
+            background-color: #000;
+            color: #ffffff;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #ffffff;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        /* Remove button border color */
+        .overlay .btn-primary {
+            border-color: transparent;
+        }
+
+        /* Team member card style */
+        .card {
+            border: none;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem; /* Updated font size */
+        }
+
+        .card-text {
+            font-size: 1rem; /* Updated font size */
+        }
+
+        /* Responsive iframe */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe,
+        .video-container object,
+        .video-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html"><img src="sblogo.png" alt="Starbucks Logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="menu.html">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About Us</a>
+                </li>
+                <li class="nav-item" id="profile-nav" style="display: none;">
+                    <a class="nav-link" href="#" id="profile-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profile-dropdown">
+                        <a class="dropdown-item" href="order.html">Order</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" id="signout-link">Sign Out</a>
+                    </div>
+                </li>
+                <li class="nav-item" id="signin-nav">
+                    <a class="nav-link" href="login.html">Sign In</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <img src="about.gif" alt="About Image" class="img-fluid rounded">
+    </div>
+   <!-- Container for Story and What Sets Us Apart -->
+<!-- Container for Story and What Sets Us Apart -->
+<div class="container">
+    <div class="row">
+        <!-- Our Story Column -->
+        <div class="col-md-6">
+            <div class="video-container">
+                <!-- YouTube video -->
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/yz6o31J-eUk" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+        </div>
+        <div class="col-md-6">
+            <div class="section">
+                <h2 class="text-center mb-4">Our Story</h2>
+                <p>Starbucks opened its first store in 1971 in Seattle's Pike Place Market. From that single store, we've grown to become one of the world's most recognized and respected brands in the coffee industry. Our commitment to providing high-quality coffee, a welcoming atmosphere, and exceptional customer service has remained unchanged throughout our journey.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Mission Section -->
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="text-center mb-4">What Sets Us Apart</h2>
+                    <p>At Starbucks, we believe in more than just serving coffee. We're committed to creating a culture of warmth and belonging, where everyone is welcome. Our dedication to acting with courage, challenging the status quo, and finding new ways to grow our company and each other sets us apart from the competition. We strive to be present, connecting with transparency, dignity, and respect in everything we do.</p>
+                </div>
+                <div class="col-md-6">
+                    <img src="137-72908.jpg" alt="Mission Image" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <!-- Sustainability Section -->
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="sustain.png" alt="Sustainability Image" class="img-fluid rounded">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="text-center mb-4">Sustainability</h2>
+                    <p>We're committed to ethically sourcing and roasting the highest-quality Arabica coffee beans and serving them with passion. Our commitment to sustainability extends to our community and to the planet. We're striving to reduce the environmental impact of our stores through energy-saving initiatives and waste reduction efforts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+    <!-- Footer -->
+    <div class="footer bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Contact Us</h5>
+                    <p>Email: info@starbucks.com</p>
+                    <p>Phone: 1-800-STARBUCKS</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <p><a href="https://www.facebook.com/StarbucksPhilippines">Facebook</a></p>
+                    <p><a href="https://twitter.com/starbucks?lang=en">Twitter</a></p>
+                    <p><a href="https://www.instagram.com/starbucks/">Instagram</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Visit Us</h5>
+                    <p>Find a Starbucks store near you</p>
+                    <a href="map.html" class="btn btn-outline-light">Store Locator</a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center mt-3">&copy; 2024 Starbucks Coffee Company. All rights reserved.</p>
+    </div>
+
+    <!-- Bootstrap and JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

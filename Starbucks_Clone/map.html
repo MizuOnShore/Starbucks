@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starbucks Store Locator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <link rel="icon" type="image/x-icon" href="sblogo.png">
+    <script src="script.js"></script>
+    <style>
+        /* Custom CSS */
+        /* Add your custom CSS here */
+    
+        #map {
+            height: 548px;
+            margin-bottom: 20px;
+        }
+    
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+    
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e2e2;
+        }
+    
+        .navbar img {
+            max-width: 100px;
+            height: auto;
+        }
+    
+        .navbar a {
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+    
+        .input-group {
+            margin-bottom: 20px;
+        }
+    
+        .form-control {
+            border-radius: 25px;
+        }
+    
+        .btn-outline-secondary {
+            border-radius: 25px;
+            color: #00704A;
+            border-color: #00704A;
+        }
+    
+        .btn-outline-secondary:hover {
+            color: #ffffff;
+            background-color: #00704A;
+            border-color: #00704A;
+        }
+    
+       
+        .list-group-item {
+            border: none;
+        }
+    
+        .list-group-item:hover {
+            cursor: pointer;
+            background-color: #c0dbb4;
+            border-color: #2e7e3f;
+            border-radius: 10px;
+            border-style: solid;
+            border-width: 2px;
+            
+        }
+    
+        /* New CSS for layout */ss
+        .left-container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    
+        .right-container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    
+        /* Added CSS for scrollable store list */
+        #storeList {
+            max-height: 490px;
+            overflow-y: auto;
+        }
+    
+        @media (min-width: 768px) {
+            .left-container {
+                float: left;
+                width: 50%;
+            }
+    
+            .right-container {
+                float: left;
+                width: 50%;
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+         
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html"><img src="sblogo.png" alt="Starbucks Logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="menu.html">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About Us</a>
+                </li>
+                <li class="nav-item" id="profile-nav" style="display: none;">
+                    <a class="nav-link" href="#" id="profile-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profile-dropdown">
+                        <a class="dropdown-item" href="order.html">Order</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" id="signout-link">Sign Out</a>
+                    </div>
+                </li>
+                <li class="nav-item" id="signin-nav">
+                    <a class="nav-link" href="login.html">Sign In</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+        <!-- Main Content -->
+        <div class="container mt-4">
+            <h2 class="mb-4">Find a Starbucks Store Near You</h2>
+            <!-- Left Container -->
+            <div class="left-container">
+                <!-- Search Bar -->
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search by location...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                    </div>
+                </div>
+                <!-- Store List -->
+                <div>
+                    <ul id="storeList" class="list-group"></ul>
+                </div>
+            </div>
+            <!-- Right Container -->
+            <div class="right-container">
+                <!-- Map Container -->
+                <div id="map" role="application" aria-label="Starbucks Store Locations"></div>
+            </div>
+        </div>
+    
+       
+        <!-- Bootstrap JS and Leaflet JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script>
+            // Initialize Leaflet map
+            var map = L.map('map').setView([13.412, 122.562], 6);
+        
+            // Add a base map layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        
+            // Array of store locations
+            var stores = [
+                { name: 'Alabang Town Center', latlng: [14.4253, 121.0300] },
+                { name: 'Festival Supermall', latlng: [14.4170, 121.0400] },
+                { name: 'SM City Calamba', latlng: [14.2016, 121.1586] },
+                { name: 'SM City Santa Rosa', latlng: [14.3180, 121.0862] },
+                { name: 'Paseo de Sta. Rosa', latlng: [14.2463, 121.0581] },
+                { name: 'Robinsons Sta. Rosa', latlng: [14.3240, 121.0825] },
+                { name: 'Nuvali', latlng: [14.2294, 121.0552] },
+                { name: 'Sta. Lucia East Grand Mall', latlng: [14.5581, 121.1225] },
+                { name: 'Ayala Malls Solenad', latlng: [14.2175, 121.0528] },
+                { name: 'Greenbelt 3', latlng: [14.5513, 121.0256] },
+                { name: 'Bonifacio High Street', latlng: [14.5493, 121.0450] },
+                { name: 'SM Mall of Asia', latlng: [14.5349, 120.9829] },
+                { name: 'Robinsons Place Manila', latlng: [14.5799, 120.9785] },
+                { name: 'Eastwood City', latlng: [14.6089, 121.0792] },
+                { name: 'Ayala Malls Circuit', latlng: [14.5653, 121.0214] },
+                { name: 'UP Town Center', latlng: [14.6561, 121.0652] },
+                { name: 'Power Plant Mall', latlng: [14.5645, 121.0361] },
+                { name: 'The Podium', latlng: [14.5879, 121.0633] },
+                { name: 'Starbucks Tagaytay', latlng: [14.1157, 120.9629] },
+    { name: 'Starbucks Lipa', latlng: [13.9446, 121.1622] },
+    { name: 'Starbucks Naga', latlng: [13.6218, 123.1940] },
+    { name: 'Starbucks Legazpi', latlng: [13.1391, 123.7426] },
+    { name: 'Starbucks Lucena', latlng: [13.9355, 121.6182] },
+    { name: 'Starbucks Baguio', latlng: [16.4023, 120.5960] },
+   
+    { name: 'Starbucks Cebu', latlng: [10.3157, 123.8854] },
+    { name: 'Starbucks Davao', latlng: [7.1907, 125.4553] },
+    { name: 'Starbucks Zamboanga', latlng: [6.9214, 122.0790] },
+    { name: 'Starbucks General Santos', latlng: [6.1124, 125.1714] },
+    { name: 'Starbucks Cagayan de Oro', latlng: [8.4812, 124.6463] },
+    { name: 'Starbucks Iligan', latlng: [8.2295, 124.2466] },
+    { name: 'Starbucks Butuan', latlng: [8.9494, 125.5430] },
+    { name: 'Starbucks Surigao', latlng: [9.7843, 125.4889] },
+    { name: 'Starbucks Alabang Westgate', latlng: [14.4154, 121.0441] },
+    { name: 'Starbucks Alabang Town Center - Expansion Wing', latlng: [14.4245, 121.0301] }
+];
+        
+            // Custom icon for store markers
+            var customIcon = L.icon({
+                iconUrl: 'sblogo.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+        
+            // Add markers for store locations
+            stores.forEach(function (store) {
+                var marker = L.marker(store.latlng, { icon: customIcon }).addTo(map).bindPopup('<b>' + store.name + '</b>');
+                // Add store to the list
+                var listItem = $('<li class="list-group-item">' + store.name + '</li>');
+                listItem.click(function () {
+                    map.setView(store.latlng, 13);
+                });
+                $('#storeList').append(listItem);
+            });
+        
+            // Function to handle search button click
+            $('#searchButton').click(function () {
+                var searchQuery = $('#searchInput').val().toLowerCase();
+                stores.forEach(function (store) {
+                    var storeName = store.name.toLowerCase();
+                    if (storeName.includes(searchQuery)) {
+                        map.setView(store.latlng, 13);
+                        return;
+                    }
+                });
+            });
+        
+            // Function to handle geolocation
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var userLocation = [position.coords.latitude, position.coords.longitude];
+                        map.setView(userLocation, 13);
+                    });
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            }
+        
+            // Call getLocation function to get user's location on page load
+            getLocation();
+        </script>
+    <script src="script.js"></script>
+    </body>
+    
+    </html>
+    

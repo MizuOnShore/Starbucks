@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starbucks</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="icon" type="image/x-icon" href="sblogo.png">
+    <style>
+        /* Custom styles for menu page */
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2; /* Updated background color */
+            color: #333; /* Default text color */
+        }
+
+        .navbar {
+            background-color: #ffffff; /* Updated navbar background color */
+            border-bottom: 1px solid #e2e2e2; /* Added border bottom */
+        }
+
+        .navbar img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .navbar a {
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem; /* Updated font size */
+            margin-right: 1rem; /* Reduced margin */
+        }
+
+        .container {
+            padding-top: 20px; /* Adjusted padding for navbar */
+        }
+
+        h1, h3 {
+            color: #006633;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        ul li img {
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        ul li:hover img {
+            transform: scale(1.1);
+        }
+
+        ul li a {
+            color: #006633;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        ul li a:hover {
+            color: #004d33;
+        }
+
+        .footer {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #ffffff;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .btn-filter {
+            padding: 8px 16px;
+            border-radius: 4px;
+            background-color: #4a5568;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-filter:hover {
+            background-color: #2d3748;
+        }
+
+        .menu-item {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .modal-description {
+            margin-bottom: 10px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 20px;
+        }
+
+        .btn-add-to-cart {
+            background-color: #38a169;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #2c7a4b;
+        }
+
+        .btn-close {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-close:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="index.html"><img src="sblogo.png" alt="Starbucks Logo"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="menu.html">Menu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">About Us</a>
+            </li>
+            <li class="nav-item" id="profile-nav" style="display: none;">
+                <a class="nav-link" href="#" id="profile-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profile-dropdown">
+                    <a class="dropdown-item" href="order.html">Order</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" id="signout-link">Sign Out</a>
+                </div>
+            </li>
+            <li class="nav-item" id="signin-nav">
+                <a class="nav-link" href="login.html">Sign In</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Menu</h1>
+        <!-- Category filters -->
+        <div class="flex justify-center mb-8">
+            <button class="btn-filter btn-filter-all mr-4" data-category="all">All</button>
+            <button class="btn-filter btn-filter-coffee mr-4" data-category="coffee">Coffee</button>
+            <button class="btn-filter btn-filter-tea mr-4" data-category="tea">Tea</button>
+            <button class="btn-filter btn-filter-bakery" data-category="bakery">Bakery</button>
+        </div>
+        <!-- Menu items -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="menu-items">
+            <!-- Menu items will be dynamically loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal Popup Container -->
+<div class="modal fade" id="coffeeModal" tabindex="-1" role="dialog" aria-labelledby="coffeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="coffeeModalLabel">Item Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="" class="modal-image" alt="Item Image">
+                <p class="modal-description"></p>
+                <p class="modal-price"></p>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" class="form-control" id="quantity" value="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="size">Size:</label>
+                    <select class="form-control" id="size">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-close" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer bg-dark text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Contact Us</h5>
+                <p>Email: info@starbucks.com</p>
+                <p>Phone: 1-800-STARBUCKS</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Follow Us</h5>
+                <p><a href="https://www.facebook.com/StarbucksPhilippines">Facebook</a></p>
+                <p><a href="https://twitter.com/starbucks?lang=en">Twitter</a></p>
+                <p><a href="https://www.instagram.com/starbucks/">Instagram</a></p>
+            </div>
+            <div class="col-md-4">
+                <h5>Visit Us</h5>
+                <p>Find a Starbucks store near you</p>
+                <a href="#" class="btn btn-outline-light">Store Locator</a>
+            </div>
+        </div>
+    </div>
+    <p class="text-center mt-3">&copy; 2024 Starbucks Coffee Company. All rights reserved.</p>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Define menu items JSON (you can load this dynamically from a backend)
+        var menuItems = [
+        {
+            name: "Cafe Misto",
+            category: "coffee",
+            image: "cafe_misto.jpg",
+            description: "A delicious blend of coffee with steamed milk.",
+            price: 4.99
+        },
+        {
+            name: "Caffe Americano",
+            category: "coffee",
+            image: "coffee_americano.jpg",
+            description: "Description",
+            price: 3.99
+        },
+        {
+            name: "Pistachio Latte",
+            category: "coffee",
+            image: "Pistacho.png",
+            description: "Description",
+            price: 5.49
+        },
+        {
+            name: "Cappuccino",
+            category: "coffee",
+            image: "Cappuccino.jpg",
+            description: "Description",
+            price: 6.99
+        },
+        {
+            name: "Chai Tea",
+            category: "tea",
+            image: "chai_tea.png",
+            description: "Description",
+            price: 2.99
+        },
+        {
+            name: "Chai Tea Latte",
+            category: "tea",
+            image: "Chai_tea_latte.png",
+            description: "Description",
+            price: 3.49
+        },
+        {
+            name: "Oleato Caffe Latte",
+            category: "bakery",
+            image: "oleato_Caffé Latte.png",
+            description: "Description",
+            price: 5.99
+        },
+        {
+            name: "Iced Matcha Tea Latte™",
+            category: "bakery",
+            image: "ice_matcha.png",
+            description: "Description",
+            price: 4.49
+        }
+    ];
+
+        // Function to display menu items
+        function displayMenuItems(items) {
+            var $menuContainer = $("#menu-items");
+            $menuContainer.empty(); // Clear previous items
+            items.forEach(function(item) {
+                var $menuItem = $("<div class='menu-item'></div>");
+                $menuItem.append("<img src='" + item.image + "' alt='" + item.name + "' class='w-full mb-4 rounded-lg'>");
+                $menuItem.append("<h3 class='text-xl font-semibold mb-2'>" + item.name + "</h3>");
+                $menuItem.append("<p class='text-gray-600 mb-2'>" + item.description + "</p>");
+                $menuItem.append("<p class='font-bold'>$" + item.price.toFixed(2) + "</p>");
+                $menuContainer.append($menuItem);
+
+                // Show modal when item is clicked
+                $menuItem.click(function() {
+                    $("#coffeeModalLabel").text(item.name);
+                    $(".modal-description").text(item.description);
+                    $(".modal-price").text("$" + item.price.toFixed(2));
+                    $(".modal-image").attr("src", item.image);
+                    $("#coffeeModal").modal("show");
+                });
+            });
+        }
+
+        // Initial display of all menu items
+        displayMenuItems(menuItems);
+
+        // Filter menu items when category filter buttons are clicked
+        $(".btn-filter").click(function() {
+            var category = $(this).data("category");
+            if (category === "all") {
+                displayMenuItems(menuItems); // Display all items
+            } else {
+                var filteredItems = menuItems.filter(function(item) {
+                    return item.category === category;
+                });
+                displayMenuItems(filteredItems); // Display filtered items
+            }
+        });
+
+        // Handle add to cart button click
+        $(".btn-add-to-cart").click(function() {
+            var item = {
+                name: $("#coffeeModalLabel").text(),
+                quantity: $("#quantity").val(),
+                size: $("#size").val(),
+                price: parseFloat($("#coffeeModal .modal-body").find(".modal-price").text().replace('$', ''))
+            };
+            var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            cartItems.push(item);
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+            alert("Item added to cart!");
+            $('#coffeeModal').modal('hide'); // Hide the modal
+        });
+
+        // Reset quantity input when modal is shown
+        $('#coffeeModal').on('show.bs.modal', function (e) {
+            $("#quantity").val(1);
+        });
+    });
+</script>
+
+</body>
+</html>
